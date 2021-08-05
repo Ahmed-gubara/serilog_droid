@@ -35,8 +35,14 @@ dependencies:
   filesystem_picker: 2.0.0-nullsafety.0
   path_provider: ^2.0.2
   flutter_hooks: ^0.17.0
-  search_choices: ^2.0.6
+  search_choices: ^2.0.7
   rxdart: ^0.27.1
+  file_picker_desktop: ^1.0.2
+  xterm: ^2.4.0-pre
+  dartssh:
+    git:
+      url: https://github.com/TerminalStudio/dartssh
+  ssh2: ^2.1.2
 
 dev_dependencies:
   flutter_test:

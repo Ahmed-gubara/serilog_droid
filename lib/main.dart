@@ -4,6 +4,7 @@ import 'package:path/path.dart' as path;
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:serilog_droid/file_picker.dart';
 import 'package:serilog_droid/filter.dart';
 import 'package:serilog_droid/filter_widget.dart';
 import 'package:serilog_droid/loader.dart';
@@ -13,6 +14,7 @@ import 'package:serilog_droid/log.dart';
 import 'package:serilog_droid/renderer.dart';
 import 'package:search_choices/search_choices.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:serilog_droid/terminal_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,9 +67,11 @@ class MyHomePage extends hooks.HookWidget {
     var filePickerCallback = hooks.useCallback(() async {
       // var externalStorageDirectory = await paths.getLibraryDirectory();
 //
-      var applicationDocumentsDirectory = await paths.getApplicationDocumentsDirectory();
+      // var applicationDocumentsDirectory = await paths.getApplicationDocumentsDirectory();
 
-      var path = await FilesystemPicker.open(context: context, rootDirectory: applicationDocumentsDirectory.parent);
+      // var path = await FilesystemPicker.open(context: context, rootDirectory: applicationDocumentsDirectory.parent);
+      String? path;
+      path = await openLogFile();
       if (path != null) {
         filepath.state = path;
       }
@@ -100,10 +104,23 @@ class MyHomePage extends hooks.HookWidget {
         itemCount: log.length,
         itemBuilder: (context, index) => buildListTile(log[index], context),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => filePickerCallback(), // _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.folder_open),
+      floatingActionButton: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            heroTag: null,
+            onPressed: () => Navigator.of(context).push<void>(MaterialPageRoute(builder: (context) => TerminalScreen())), // _incrementCounter,
+            tooltip: '',
+            child: Text("SSH"),
+          ),
+          SizedBox(width: 20),
+          FloatingActionButton(
+            heroTag: null,
+            onPressed: () => filePickerCallback(), // _incrementCounter,
+            tooltip: 'Increment',
+            child: Icon(Icons.folder_open),
+          ),
+        ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
